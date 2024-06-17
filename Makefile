@@ -1,27 +1,24 @@
-CXX := g++
+CXX := clang++
 CXXFLAGS = -std=c++23
 
-DEBUG := -g -Wall -Wpedantic -Werror -O0
+DEBUG := -g -pedantic -O0
 RELEASE := -O2
 
 BUILD ?= DEBUG
 
 BIN := cxx
 
-SRC := $(wildcard src/*.cc)
-OBJ := $(patsubst src/%.cc, out/%.o, $(SRC))
+SRC := $(wildcard src/*.cpp)
 
-out/%.o: src/%.cc
-	@$(CXX) $(CXXFLAGS) $($(BUILD)) -c $< -o $@
-	@echo [COMPILED] $<
-
-build: $(SRC) $(OBJ)
+build: $(SRC)
 	@echo [FLAGS] $(CXXFLAGS) $($(BUILD))
-	@$(CXX) $(CXXFLAGS) $($(BUILD)) $(OBJ) -o $(BIN)
+	@$(CXX) $(CXXFLAGS) $($(BUILD)) $(SRC) -o $(BIN)
 	@echo [BUILD SUCCESSFUL]
 
+test: build
+	@./cxx
 release: BUILD = RELEASE
 release: build
 clean:
 	rm -f out/*.o ./$(BIN)
-.PHONY: build clean debug release
+.PHONY: build test clean debug release
