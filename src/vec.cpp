@@ -1,9 +1,7 @@
-#include <algorithm>
-#include <concepts>
-#include <initializer_list>
-#include <iterator>
 #include <memory>
 #include <utility>
+#include <iterator>
+#include <algorithm>
 
 template <typename T, typename _Alloc = std::allocator<T>> class Vec {
 private:
@@ -21,7 +19,7 @@ private:
   typedef value_type &reference;
 
   struct iterator {
-    using iterator_category = std::random_access_iterator_tag;
+    using iterator_category = std::contiguous_iterator_tag;
     using value_type = value_type;
     using pointer = pointer;
     using reference = reference;
@@ -311,5 +309,8 @@ public:
     start = tmp;
     finish = tmp + std::min(tsize, n);
     store_end = tmp + n;
+  }
+  constexpr void shrink_to_fit() {
+    store_end = finish;
   }
 };

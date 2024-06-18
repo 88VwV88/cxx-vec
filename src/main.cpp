@@ -15,6 +15,7 @@ int main() {
   for (const auto &x: v)
     std::cout << x << ", ";
   std::cout << "\b\b]" << std::endl;
+  v.shrink_to_fit();
   std::cout << "storage: " << v.capacity() + v.size() << '\n';
 
   return 0;
