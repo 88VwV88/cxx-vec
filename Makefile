@@ -9,8 +9,15 @@ BUILD ?= DEBUG
 BIN := cxx
 
 SRC := $(wildcard src/*.cpp)
+OBJ := $(patsubst src/%.cpp, out/%.o, $(SRC))
 
-build: $(SRC)
+out/%.o: src/%.cpp
+	@echo [COMPILE] $@
+	@$(CXX) $(CXXFLAGS) $($(BUILD)) -c $< -o $@
+
+build: $(SRC) $(OBJ)
+	@echo [SOURCES] $(SRC) 
+	@echo [OBJECTS] $(OBJ)
 	@echo [FLAGS] $(CXXFLAGS) $($(BUILD))
 	@$(CXX) $(CXXFLAGS) $($(BUILD)) $(SRC) -o $(BIN)
 	@echo [BUILD SUCCESSFUL]
